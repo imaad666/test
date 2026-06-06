@@ -1,14 +1,19 @@
-import axios from 'axios';
+import express from 'express';
+import testController from '../controllers/testController.js';
 
-const api = axios.create({
-  baseURL: 'http://localhost:3000',
+const router = express.Router();
+
+// Existing test route
+router.get('/test', testController.getTest);
+
+// New outreach route
+router.get('/outreach', (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      message: 'Outreach API endpoint active'
+    }
+  });
 });
 
-export const getTestData = async () => {
-  try {
-    const response = await api.get('/test');
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
+export default router;
