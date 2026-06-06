@@ -1,21 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { apiLinks } from './helpers/api';
+import React, { useState } from 'react';
 
 function App() {
+  const [text, setText] = useState('App');
+
+  const handleClick = () => {
+    setText('Updated');
+  };
+
   return (
     <div>
-      <h1>Home Page</h1>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/new-page">New Page</Link></li>
-      </ul>
-      <p>API Links:</p>
-      <ul>
-        {Object.keys(apiLinks).map((key) => (
-          <li key={key}>{key}: {apiLinks[key]}</li>
-        ))}
-      </ul>
+      <p>{text}</p>
+      <button onClick={handleClick}>Update</button>
     </div>
   );
 }
