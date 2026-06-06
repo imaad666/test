@@ -1,4 +1,4 @@
-export const routes = [
-  { path: '/', component: 'App' },
-  { path: '/outreach', component: 'OutreachPage' },
-];
+export default {
+  NEW_PAGE: '/new',
+  OUTREACH_PAGE: '/outreach',
+};
