@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import OutreachPage from './OutreachPage';
 
-function App() {
-  const [text, setText] = useState('App');
-
-  const handleClick = () => {
-    setText('Updated');
-  };
-
+const App = () => {
   return (
-    <div>
-      <p>{text}</p>
-      <button onClick={handleClick}>Update</button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/outreach" element={<OutreachPage />} />
+        {/* Add other routes here */}
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
