@@ -1,36 +1,38 @@
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import apiRoutes from './src/api.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Serve static files including favicon
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware
+app.use(cors());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
-// Favicon endpoint
-app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'favicon.ico'));
+// Routes
+app.use('/api', apiRoutes);
+
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
-// Mock logo analysis (replace with real analysis when logo is available)
-async function analyzeLogo() {
-  // Placeholder for color/typography extraction from codex_logo
-  return {
-    primaryColor: '#2C3E50',
-    accentColor: '#E67E22',
-    fontFamily: '"Source Sans Pro", sans-serif'
-  };
-}
-
-// Apply styling analysis (simulated)
-analyzeLogo().then((styles) => {
-  console.log('Styling insights applied:', styles);
+// Start server
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  process.exit(1);
+});
+
+// Handle unhandled rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'Reason:', reason);
+  server.close(() => process.exit(1));
 });
