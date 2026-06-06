@@ -1,14 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { apiLinks } from './helpers/api';
 
 function App() {
   return (
     <div>
-      <head>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-      </head>
-      <h1>Codex App</h1>
-      <p>Selected visual inspiration: codex_logo</p>
+      <h1>Home Page</h1>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/new-page">New Page</Link></li>
+      </ul>
+      <p>API Links:</p>
+      <ul>
+        {Object.keys(apiLinks).map((key) => (
+          <li key={key}>{key}: {apiLinks[key]}</li>
+        ))}
+      </ul>
     </div>
   );
 }
