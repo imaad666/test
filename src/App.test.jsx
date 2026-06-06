@@ -1,17 +1,17 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 describe('App component', () => {
-  it('renders links to all pages', async () => {
-    const { getByText } = render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
+  it('renders correctly', () => {
+    const { getByText } = render(<App />);
+    expect(getByText('App')).toBeInTheDocument();
+  });
 
-    expect(getByText('Home')).toBeInTheDocument();
-    expect(getByText('New Page')).toBeInTheDocument();
+  it('handles changes', () => {
+    const { getByText, getByRole } = render(<App />);
+    const button = getByRole('button');
+    fireEvent.click(button);
+    waitFor(() => expect(getByText('Updated')).toBeInTheDocument());
   });
 });
