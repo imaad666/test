@@ -1,26 +1,36 @@
 import express from 'express';
-import { validate } from './helper.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.json());
-
 const PORT = 3000;
 
-// A simple route
-app.get('/api/ping', (req, res) => {
-  res.status(200).send('Pong');
+// Serve static files including favicon
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Favicon endpoint
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'favicon.ico'));
 });
 
-// A route with validation example
-app.post('/api/echo', (req, res) => {
-  const { error, value } = validate(req.body);
-  if (error) {
-    res.status(400).send({ message: error });
-  } else {
-    res.send(value);
-  }
+// Mock logo analysis (replace with real analysis when logo is available)
+async function analyzeLogo() {
+  // Placeholder for color/typography extraction from codex_logo
+  return {
+    primaryColor: '#2C3E50',
+    accentColor: '#E67E22',
+    fontFamily: '"Source Sans Pro", sans-serif'
+  };
+}
+
+// Apply styling analysis (simulated)
+analyzeLogo().then((styles) => {
+  console.log('Styling insights applied:', styles);
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
